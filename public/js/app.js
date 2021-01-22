@@ -2010,11 +2010,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     type: {
       type: String,
-      "default": 'submit'
+      "default": "submit"
     }
   }
 });
@@ -4380,6 +4383,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4391,6 +4429,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     users: Array
+  },
+  data: function data() {
+    return {
+      classes: ["Logica", "Loopbaan en Burgerschap", "Engels", "Nederlands", "Rekenen", "PHP", "Frameworks", "Java", "Project", "UML", "SQL"]
+    };
   }
 });
 
@@ -4410,6 +4453,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Layouts/AppLayout */ "./resources/js/Layouts/AppLayout.vue");
 /* harmony import */ var _components_UserList__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/UserList */ "./resources/js/components/UserList.vue");
 /* harmony import */ var _Jetstream_Button_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Jetstream/Button.vue */ "./resources/js/Jetstream/Button.vue");
+//
+//
+//
 //
 //
 //
@@ -29119,7 +29165,7 @@ var render = function() {
     "button",
     {
       staticClass:
-        "inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150",
+        "justify-center inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150",
       attrs: { type: _vm.type }
     },
     [_vm._t("default")],
@@ -32872,7 +32918,71 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
-                _c("div", { staticClass: "form" })
+                _c(
+                  "div",
+                  { staticClass: "form mx-auto flex flex-col w-3/4" },
+                  [
+                    _c("h3", { staticClass: "text-xl text-center" }, [
+                      _vm._v(
+                        "\n                            blyat form\n                        "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "" } }, [_vm._v("Class:")]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      { staticClass: "my-2", attrs: { name: "", id: "" } },
+                      _vm._l(_vm.classes, function(item, index) {
+                        return _c(
+                          "option",
+                          { key: index, domProps: { value: item } },
+                          [_vm._v(_vm._s(item))]
+                        )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "" } }, [_vm._v("Name:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "my-2",
+                      attrs: {
+                        type: "text",
+                        name: "",
+                        placeholder: "The title of the assignment mate",
+                        id: ""
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "" } }, [
+                      _vm._v("Description:")
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      staticClass: "my-2",
+                      attrs: {
+                        name: "",
+                        id: "",
+                        cols: "30",
+                        rows: "10",
+                        placeholder: "The description of the assignment mate"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "" } }, [_vm._v("Due date:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "my-2",
+                      attrs: { type: "date", name: "", id: "" }
+                    }),
+                    _vm._v(" "),
+                    _c("Button", { staticClass: "w-12 mx-auto mt-2" }, [
+                      _c("p", [_vm._v("Save")])
+                    ])
+                  ],
+                  1
+                )
               ])
             ]
           )
@@ -32979,11 +33089,14 @@ var render = function() {
                       { staticClass: "flex flex-row mx-auto py-2" },
                       [
                         _c(
-                          "Button",
-                          { attrs: { href: _vm.route("assignment.create") } },
+                          "inertia-link",
+                          {
+                            staticClass: "bg-black p-2 text-white  rounded",
+                            attrs: { href: _vm.route("assignment.create") }
+                          },
                           [
                             _vm._v(
-                              "\n                                Add Assignment\n                            "
+                              "\n                                create ass\n                            "
                             )
                           ]
                         )
