@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\HomeController;
+use App\Models\Assignment;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,15 +19,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Route::middleware(['auth:sanctum', 'verified', 'admin'])->get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
 Route::prefix('/dashboard')->middleware(['auth:sanctum', 'verified', 'admin'])->group(function () {
     Route::get('/', [Dashboard::class, 'index'])->name('dashboard');
     Route::get('/create-assignment', [AssignmentController::class, 'create'])->name('assignment.create');
+    Route::post('/store-assignment', [AssignmentController::class, 'store'])->name("assignment.store");
 });
