@@ -3714,6 +3714,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Assignment",
@@ -3725,13 +3735,31 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   props: {
-    assignment: Object
+    assignment: Object,
+    state: Object
   },
   methods: {},
   computed: {
     dueDate: function dueDate() {
       var date = new Date(this.assignment["due_date"]);
       return "".concat(date.getDate(), "-").concat(date.getMonth() + 1, "-").concat(date.getFullYear());
+    },
+    stateToText: function stateToText() {
+      var state = this.state;
+
+      switch (state) {
+        case 1:
+          return "pain";
+
+        case 2:
+          return "less pain";
+
+        case 3:
+          return "no pain just sad";
+
+        default:
+          return "not even started with the pain";
+      }
     }
   }
 });
@@ -32369,11 +32397,7 @@ var render = function() {
                         "\n            "
                     )
                   ]
-                ),
-                _vm._v(" "),
-                _c("p", { staticClass: "text-red-600" }, [
-                  _vm._v("Due at " + _vm._s(_vm.dueDate))
-                ])
+                )
               ])
             ]
           },
@@ -32394,7 +32418,7 @@ var render = function() {
             [
               _c("article", { staticClass: "flex flex-col py-4" }, [
                 _c("div", { staticClass: "text-center" }, [
-                  _c("h2", { staticClass: "text-xl font-medium" }, [
+                  _c("h2", { staticClass: "text-3xl font-bold" }, [
                     _vm._v(
                       "\n                            " +
                         _vm._s(_vm.assignment.title) +
@@ -32403,13 +32427,35 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "w-3/4 mx-auto my-4" }, [
-                  _c("p", [
+                _c("div", { staticClass: "w-1/2 mx-auto my-4 flex flex-col" }, [
+                  _c("p", {}, [
                     _vm._v(
                       "\n                            " +
                         _vm._s(_vm.assignment.description) +
                         "\n                        "
                     )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex flex-row mt-4 text-lg" }, [
+                    _c("p", { staticClass: "font-bold" }, [_vm._v("Due at:")]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "ml-1 text-red-600 font-bold" }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.dueDate) +
+                          "\n                            "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex flex-row pt-4" }, [
+                    _c("p", { staticClass: "text-lg font-bold" }, [
+                      _vm._v("Status:")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "ml-1 text-lg" }, [
+                      _vm._v(_vm._s(_vm.stateToText))
+                    ])
                   ])
                 ])
               ])
