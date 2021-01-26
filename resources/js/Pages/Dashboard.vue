@@ -28,9 +28,12 @@
                                 Do you want to add an assignment?
                             </h3>
                             <div class="flex flex-row mx-auto py-2">
-                                <Button :href="route('assignment.create')">
-                                    Add Assignment
-                                </Button>
+                                <inertia-link
+                                    :href="route('assignment.create')"
+                                    class="bg-black p-2 text-white  rounded"
+                                >
+                                    create ass
+                                </inertia-link>
                             </div>
                         </div>
                     </div>

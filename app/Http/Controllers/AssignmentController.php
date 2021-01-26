@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
 class AssignmentController extends Controller
@@ -34,9 +34,28 @@ class AssignmentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
+        // dd(Request::all());
         //
+        try {
+            Request::validate([
+                'title' => ['required', 'max:50'],
+                'description' => ['required', 'max:500'],
+                'classes' => ['required', 'max:50',],
+                'dueDate' => ['required'],
+            ]);
+            $assignment = new Assignment();
+            $assignment->title = request('title');
+            $assignment->description = request('description');
+            $assignment->class = request('classes');
+            $assignment->due_date = request('dueDate');
+            $assignment->save();
+
+            return redirect(route('home'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $e;
+        }
     }
 
     /**
