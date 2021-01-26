@@ -64,9 +64,12 @@ class AssignmentController extends Controller
      * @param  \App\Models\Assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function show(Assignment $assignment)
+    public function show($id)
     {
-        //
+        $ass = Assignment::find($id);
+        if (!$ass) abort(404, 'Assignment not found');
+
+        return Inertia::render('Assignment', ["assignment" => $ass]);
     }
 
     /**

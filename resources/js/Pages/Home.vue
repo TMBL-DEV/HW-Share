@@ -19,7 +19,7 @@
                         </h1>
                         <div class="flex flex-row w-full justify-center">
                             <assignment-card
-                                class=" m-2"
+                                class="m-2"
                                 :assignment="ass"
                                 v-for="ass in theAsses.data"
                                 :key="ass.id"

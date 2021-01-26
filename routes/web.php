@@ -19,7 +19,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->middleware(['auth:sanctum', 'verified'])->name('home');
+Route::get('/assignment/{id}', [AssignmentController::class, 'show'])->name('assignment');
+
 
 // Route::middleware(['auth:sanctum', 'verified', 'admin'])->get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
 Route::prefix('/dashboard')->middleware(['auth:sanctum', 'verified', 'admin'])->group(function () {
