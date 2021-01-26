@@ -4635,8 +4635,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4645,8 +4643,25 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__.default,
     AssignmentCard: _components_AssignmentCard_vue__WEBPACK_IMPORTED_MODULE_1__.default
   },
+  data: function data() {
+    return {
+      kind: "due"
+    };
+  },
   props: {
-    assignments: Object
+    assignments: Object,
+    pastDueAssignments: Object
+  },
+  methods: {
+    checkDue: function checkDue(ass) {
+      var currentDate = new Date();
+      var assDate = new Date(ass["due_date"]);
+      console.log(assDate.now());
+      return assDate.now() < currentDate.now();
+    },
+    changeKind: function changeKind() {
+      this.kind === "due" ? this.kind = "past due" : this.kind = "due";
+    }
   },
   computed: {
     pagesLinks: function pagesLinks() {
@@ -4665,6 +4680,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     currentPageStyling: function currentPageStyling() {
       return this.assignments["current_page"];
+    },
+    theAsses: function theAsses() {
+      if (this.kind === "due") return this.assignments;
+      return this.pastDueAssignments;
+    },
+    kindStyling: function kindStyling() {
+      if (this.kind === "due") return "hover:text-red-600";
+      return "hover:text-blue-600";
     }
   }
 });
@@ -6023,6 +6046,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
+/* harmony import */ var _Jetstream_ConfirmationModal_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Jetstream/ConfirmationModal.vue */ "./resources/js/Jetstream/ConfirmationModal.vue");
+/* harmony import */ var _Jetstream_DangerButton_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Jetstream/DangerButton.vue */ "./resources/js/Jetstream/DangerButton.vue");
+/* harmony import */ var _Jetstream_SecondaryButton_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Jetstream/SecondaryButton.vue */ "./resources/js/Jetstream/SecondaryButton.vue");
 //
 //
 //
@@ -6062,18 +6088,68 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     users: Array
   },
+  components: {
+    ConfirmationModal: _Jetstream_ConfirmationModal_vue__WEBPACK_IMPORTED_MODULE_0__.default,
+    DangerButton: _Jetstream_DangerButton_vue__WEBPACK_IMPORTED_MODULE_1__.default,
+    SecondaryButton: _Jetstream_SecondaryButton_vue__WEBPACK_IMPORTED_MODULE_2__.default
+  },
   data: function data() {
-    return {};
+    return {
+      confirmingUserDeletion: false,
+      user: {}
+    };
+  },
+  methods: {
+    showConfirmForm: function showConfirmForm(user) {
+      this.confirmingUserDeletion = true;
+      this.user = user;
+    },
+    changeAdminRights: function changeAdminRights(user) {
+      var _this = this;
+
+      this.$inertia.post("/dashboard/admin/user/".concat(user.id)).then(function () {
+        return _this.confirmingUserDeletion = false;
+      });
+    },
+    cancelChangeAdmin: function cancelChangeAdmin() {
+      this.confirmingUserDeletion = false;
+      this.user = {};
+    }
   },
   computed: {
     adminBool: function adminBool() {
       return this.users.map(function (user) {
         return user.admin ? "Yes" : "No";
       });
+    },
+    userRightNameReversed: function userRightNameReversed() {
+      return this.user.admin == 1 ? "Normal" : "Admin";
     }
   }
 });
@@ -33652,14 +33728,25 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "flex flex-col" }, [
-                _c("h1", { staticClass: "mx-auto text-2xl my-4" }, [
-                  _vm._v("Homework")
-                ]),
+                _c(
+                  "h1",
+                  {
+                    class: "mx-auto text-2xl my-4 " + _vm.kindStyling,
+                    on: { click: _vm.changeKind }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Homework " +
+                        _vm._s(_vm.kind) +
+                        "\n                    "
+                    )
+                  ]
+                ),
                 _vm._v(" "),
                 _c(
                   "div",
                   { staticClass: "flex flex-row w-full justify-center" },
-                  _vm._l(_vm.assignments.data, function(ass) {
+                  _vm._l(_vm.theAsses.data, function(ass) {
                     return _c("assignment-card", {
                       key: ass.id,
                       staticClass: " m-2",
@@ -33672,7 +33759,7 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "flex flex-row mx-auto" },
-                  _vm._l(_vm.assignments.links, function(link, index) {
+                  _vm._l(_vm.theAsses.links, function(link, index) {
                     return _c(
                       "div",
                       { key: index, staticClass: " m-2" },
@@ -35749,52 +35836,125 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "flex" }, [
-    _c("table", { staticClass: "table-auto mx-auto w-3/4" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "tbody",
-        {},
-        _vm._l(_vm.users, function(user, index) {
-          return _c("tr", { key: user.id }, [
-            _c("th", { staticClass: "border-2 border-purple-400" }, [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(user.id) +
-                  "\n                "
-              )
-            ]),
-            _vm._v(" "),
-            _c("th", { staticClass: "border-2 border-purple-400" }, [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(user.name) +
-                  "\n                "
-              )
-            ]),
-            _vm._v(" "),
-            _c("th", { staticClass: "border-2 border-purple-400" }, [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(user.email) +
-                  "\n                "
-              )
-            ]),
-            _vm._v(" "),
-            _c("th", { staticClass: "border-2 border-purple-400" }, [
-              _vm._v(
-                "\n                    " +
-                  _vm._s(_vm.adminBool[index]) +
-                  "\n                "
-              )
+  return _c(
+    "div",
+    { staticClass: "flex" },
+    [
+      _c("table", { staticClass: "table-auto mx-auto w-3/4" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          {},
+          _vm._l(_vm.users, function(user, index) {
+            return _c("tr", { key: user.id }, [
+              _c("th", { staticClass: "border-2 border-purple-400" }, [
+                _c(
+                  "p",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.showConfirmForm(user)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(user.id))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("th", { staticClass: "border-2 border-purple-400" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(user.name) +
+                    "\n                "
+                )
+              ]),
+              _vm._v(" "),
+              _c("th", { staticClass: "border-2 border-purple-400" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(user.email) +
+                    "\n                "
+                )
+              ]),
+              _vm._v(" "),
+              _c("th", { staticClass: "border-2 border-purple-400" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.adminBool[index]) +
+                    "\n                "
+                )
+              ])
             ])
-          ])
-        }),
-        0
-      )
-    ])
-  ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("confirmation-modal", {
+        attrs: { show: _vm.confirmingUserDeletion },
+        scopedSlots: _vm._u([
+          {
+            key: "title",
+            fn: function() {
+              return [_vm._v(" Change " + _vm._s(_vm.user.name) + " rights ? ")]
+            },
+            proxy: true
+          },
+          {
+            key: "content",
+            fn: function() {
+              return [
+                _vm._v(
+                  "\n            Are you sure you want to change this users right? this can have\n            massive impact on the website !\n        "
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "footer",
+            fn: function() {
+              return [
+                _c(
+                  "secondary-button",
+                  {
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.cancelChangeAdmin($event)
+                      }
+                    }
+                  },
+                  [_vm._v("\n                Nevermind\n            ")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "danger-button",
+                  {
+                    staticClass: "ml-2",
+                    nativeOn: {
+                      click: function($event) {
+                        return _vm.changeAdminRights(_vm.user)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                Make " +
+                        _vm._s(_vm.userRightNameReversed) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ]
+            },
+            proxy: true
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {

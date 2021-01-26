@@ -26,4 +26,5 @@ Route::prefix('/dashboard')->middleware(['auth:sanctum', 'verified', 'admin'])->
     Route::get('/', [Dashboard::class, 'index'])->name('dashboard');
     Route::get('/create-assignment', [AssignmentController::class, 'create'])->name('assignment.create');
     Route::post('/store-assignment', [AssignmentController::class, 'store'])->name("assignment.store");
+    Route::post('admin/user/{id}', [Dashboard::class, 'rights'])->name("admin.rights");
 });

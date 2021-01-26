@@ -11,25 +11,23 @@
                     class="bg-white pb-4 overflow-hidden shadow-xl sm:rounded-lg"
                 >
                     <div class="flex flex-col">
-                        <h1 class="mx-auto text-2xl my-4">Homework</h1>
+                        <h1
+                            :class="'mx-auto text-2xl my-4 ' + kindStyling"
+                            @click="changeKind"
+                        >
+                            Homework {{ kind }}
+                        </h1>
                         <div class="flex flex-row w-full justify-center">
-                            <!-- <article
-                                v-for="(ass, index) in assignments.data"
-                                :key="ass.id"
-                            >
-                                <h1>{{ ass.title }}</h1>
-                                <p>due at {{ dueDate }}</p>
-                            </article> -->
                             <assignment-card
                                 class=" m-2"
                                 :assignment="ass"
-                                v-for="ass in assignments.data"
+                                v-for="ass in theAsses.data"
                                 :key="ass.id"
                             ></assignment-card>
                         </div>
                         <div class="flex flex-row mx-auto">
                             <div
-                                v-for="(link, index) in assignments.links"
+                                v-for="(link, index) in theAsses.links"
                                 :key="index"
                                 class=" m-2"
                             >
@@ -67,8 +65,27 @@ export default {
         AppLayout,
         AssignmentCard
     },
+    data: function() {
+        return {
+            kind: "due"
+        };
+    },
     props: {
-        assignments: Object
+        assignments: Object,
+        pastDueAssignments: Object
+    },
+    methods: {
+        checkDue(ass) {
+            const currentDate = new Date();
+            const assDate = new Date(ass["due_date"]);
+            console.log(assDate.now());
+            return assDate.now() < currentDate.now();
+        },
+        changeKind() {
+            this.kind === "due"
+                ? (this.kind = "past due")
+                : (this.kind = "due");
+        }
     },
     computed: {
         pagesLinks: function() {
@@ -86,6 +103,14 @@ export default {
         },
         currentPageStyling: function() {
             return this.assignments["current_page"];
+        },
+        theAsses: function() {
+            if (this.kind === "due") return this.assignments;
+            return this.pastDueAssignments;
+        },
+        kindStyling: function() {
+            if (this.kind === "due") return "hover:text-red-600";
+            return "hover:text-blue-600";
         }
     }
 };
