@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assignment;
+use App\Models\AssignmentState;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 
@@ -64,9 +66,13 @@ class AssignmentController extends Controller
      * @param  \App\Models\Assignment  $assignment
      * @return \Illuminate\Http\Response
      */
-    public function show(Assignment $assignment)
+    public function show($id)
     {
-        //
+        $ass = Assignment::find($id);
+        if (!$ass) abort(404, 'Assignment not found');
+        $state = AssignmentState::getAss(Auth::user()->id, $id);
+        if (!$state) $state = ['state' => 0];
+        return Inertia::render('Assignment', ["assignment" => $ass, "state" => $state]);
     }
 
     /**

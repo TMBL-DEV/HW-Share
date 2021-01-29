@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\AssignmentStateController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\HomeController;
 use App\Models\Assignment;
+use App\Models\AssignmentState;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,8 +22,9 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/assignment/{id}', [AssignmentController::class, 'show'])->middleware(['auth:sanctum', 'verified'])->name('assignment');
+Route::post('/assignment/{id}/status/{state}', [AssignmentStateController::class, 'store'])->middleware(['auth:sanctum', 'verified'])->name('assignmentState.store');
 
-// Route::middleware(['auth:sanctum', 'verified', 'admin'])->get('/dashboard', [Dashboard::class, 'index'])->name('dashboard');
 Route::prefix('/dashboard')->middleware(['auth:sanctum', 'verified', 'admin'])->group(function () {
     Route::get('/', [Dashboard::class, 'index'])->name('dashboard');
     Route::get('/create-assignment', [AssignmentController::class, 'create'])->name('assignment.create');
