@@ -83,7 +83,7 @@ class AssignmentController extends Controller
      */
     public function edit(Assignment $assignment)
     {
-        //
+        return Inertia::render('EditAssignment', ["assignment" => Assignment::find($assignment->id)]);
     }
 
     /**
@@ -95,7 +95,26 @@ class AssignmentController extends Controller
      */
     public function update(Request $request, Assignment $assignment)
     {
-        //
+        try {
+            Request::validate([
+                'title' => ['required', 'max:50'],
+                'description' => ['required', 'max:500'],
+                'classes' => ['required', 'max:50',],
+                'dueDate' => ['required'],
+            ]);
+
+            $assignment->title = request('title');
+            $assignment->description = request('description');
+            $assignment->class = request('classes');
+            $assignment->due_date = request('dueDate');
+            $assignment->update();
+        } catch (\Throwable $th) {
+            // dd($ass)
+            throw ($th);
+            // abort(500, 'something went wrong, try again later.');
+        }
+
+        return redirect(route('home'));
     }
 
     /**

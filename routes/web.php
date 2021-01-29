@@ -22,8 +22,13 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/assignment/{id}', [AssignmentController::class, 'show'])->middleware(['auth:sanctum', 'verified'])->name('assignment');
-Route::post('/assignment/{id}/status/{state}', [AssignmentStateController::class, 'store'])->middleware(['auth:sanctum', 'verified'])->name('assignmentState.store');
+
+Route::prefix('/assignment')->middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/{id}', [AssignmentController::class, 'show'])->name('assignment');
+    Route::post('/{id}/status/{state}', [AssignmentStateController::class, 'store'])->name('assignmentState.store');
+    Route::get('/{assignment}/edit', [AssignmentController::class, 'edit'])->middleware(['admin'])->name('assignment.edit');
+    Route::put('/{assignment}', [AssignmentController::class, 'update'])->middleware(['admin'])->name('assignment.update');
+});
 
 Route::prefix('/dashboard')->middleware(['auth:sanctum', 'verified', 'admin'])->group(function () {
     Route::get('/', [Dashboard::class, 'index'])->name('dashboard');
