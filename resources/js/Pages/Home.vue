@@ -27,7 +27,7 @@
                         </div>
                         <div class="flex flex-row mx-auto">
                             <div
-                                v-for="(link, index) in theAsses.links"
+                                v-for="(link, index) in theAsses.meta.links"
                                 :key="index"
                                 class=" m-2"
                             >
@@ -71,7 +71,7 @@ export default {
         };
     },
     props: {
-        assignments: Object,
+        collection: Object,
         pastDueAssignments: Object
     },
     methods: {
@@ -88,24 +88,11 @@ export default {
         }
     },
     computed: {
-        pagesLinks: function() {
-            const links = [];
-            for (let i = 0; i < this.assignments.links.length; i++) {
-                const e = this.assignments.links[i];
-
-                if (e.url) {
-                    if (e.label == "&laquo; Previous" || "Next &raquo;") {
-                        // e.label = "Previous";
-                    }
-                    links.push(e);
-                }
-            }
-        },
         currentPageStyling: function() {
-            return this.assignments["current_page"];
+            return this.collection.meta["current_page"];
         },
         theAsses: function() {
-            if (this.kind === "due") return this.assignments;
+            if (this.kind === "due") return this.collection;
             return this.pastDueAssignments;
         },
         kindStyling: function() {

@@ -70,7 +70,7 @@ class AssignmentController extends Controller
     {
         $ass = Assignment::find($id);
         if (!$ass) abort(404, 'Assignment not found');
-        $state = AssignmentState::find(Auth::user()->id, $id);
+        $state = AssignmentState::getAss(Auth::user()->id, $id);
         if (!$state) $state = ['state' => 0];
         return Inertia::render('Assignment', ["assignment" => $ass, "state" => $state]);
     }

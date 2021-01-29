@@ -3724,6 +3724,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Assignment",
@@ -3731,34 +3736,66 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__.default
   },
   data: function data() {
-    return {// kind: "due"
+    return {
+      mutatedState: this.state.state,
+      submit: false,
+      countdown: null
     };
   },
   props: {
     assignment: Object,
     state: Object
   },
-  methods: {},
+  methods: {
+    changeState: function changeState() {
+      // set the state
+      this.mutatedState < 3 ? this.mutatedState++ : this.mutatedState = 0; // cancel the submit if there is one
+
+      if (this.submit) {
+        clearTimeout(this.countdown);
+        this.submit = !this.submit;
+      } //start a new submit
+
+
+      this.startCountDown();
+    },
+    submitState: function submitState() {
+      this.$inertia.post("/assignment/".concat(this.assignment.id, "/status/").concat(this.mutatedState)).then(function (res) {
+        return console.log("zuccc");
+      })["catch"](function (e) {
+        return console.error(e);
+      });
+    },
+    startCountDown: function startCountDown() {
+      var _this = this;
+
+      this.countdown = setTimeout(function () {
+        _this.submitState();
+
+        _this.submit = !_this.submit;
+      }, 750);
+    }
+  },
   computed: {
     dueDate: function dueDate() {
       var date = new Date(this.assignment["due_date"]);
       return "".concat(date.getDate(), "-").concat(date.getMonth() + 1, "-").concat(date.getFullYear());
     },
     stateToText: function stateToText() {
-      var state = this.state;
+      var state = this.mutatedState;
 
       switch (state) {
         case 1:
-          return "pain";
+          return "waiting";
 
         case 2:
-          return "less pain";
+          return "working on it";
 
         case 3:
-          return "no pain just sad";
+          return "done POGGERS";
 
         default:
-          return "not even started with the pain";
+          return "nothing yet";
       }
     }
   }
@@ -4746,7 +4783,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   props: {
-    assignments: Object,
+    collection: Object,
     pastDueAssignments: Object
   },
   methods: {
@@ -4761,25 +4798,11 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    pagesLinks: function pagesLinks() {
-      var links = [];
-
-      for (var i = 0; i < this.assignments.links.length; i++) {
-        var e = this.assignments.links[i];
-
-        if (e.url) {
-          if (e.label == "&laquo; Previous" || "Next &raquo;") {// e.label = "Previous";
-          }
-
-          links.push(e);
-        }
-      }
-    },
     currentPageStyling: function currentPageStyling() {
-      return this.assignments["current_page"];
+      return this.collection.meta["current_page"];
     },
     theAsses: function theAsses() {
-      if (this.kind === "due") return this.assignments;
+      if (this.kind === "due") return this.collection;
       return this.pastDueAssignments;
     },
     kindStyling: function kindStyling() {
@@ -6120,6 +6143,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     assignment: Object
@@ -6128,6 +6154,24 @@ __webpack_require__.r(__webpack_exports__);
     displayDate: function displayDate() {
       var dateObject = new Date(this.assignment["due_date"]);
       return "".concat(dateObject.getDate(), "-").concat(dateObject.getMonth() + 1, "-").concat(dateObject.getFullYear());
+    },
+    StateStyling: function StateStyling() {
+      var state = this.assignment.state;
+      if (!state) state = 0;else state = this.assignment.state.state;
+
+      switch (state) {
+        case 1:
+          return "border-yellow-400";
+
+        case 2:
+          return "border-blue-400";
+
+        case 3:
+          return "border-green-400";
+
+        default:
+          return "border-red-400";
+      }
     }
   }
 });
@@ -32453,9 +32497,20 @@ var render = function() {
                       _vm._v("Status:")
                     ]),
                     _vm._v(" "),
-                    _c("p", { staticClass: "ml-1 text-lg" }, [
-                      _vm._v(_vm._s(_vm.stateToText))
-                    ])
+                    _c(
+                      "p",
+                      {
+                        staticClass: "ml-1 text-lg hover:text-blue-600",
+                        on: { click: _vm.changeState }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(_vm.stateToText) +
+                            "\n                            "
+                        )
+                      ]
+                    )
                   ])
                 ])
               ])
@@ -34044,7 +34099,7 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "flex flex-row mx-auto" },
-                  _vm._l(_vm.theAsses.links, function(link, index) {
+                  _vm._l(_vm.theAsses.meta.links, function(link, index) {
                     return _c(
                       "div",
                       { key: index, staticClass: " m-2" },
@@ -36071,8 +36126,9 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass:
-              "flex flex-row bg-white shadow-sm border-white hover:border-gray-500 border-gray-200 border-2 rounded p-4"
+            class:
+              _vm.StateStyling +
+              "  flex flex-row bg-white shadow-sm hover:border-gray-500  border-2 rounded p-4"
           },
           [
             _c("div", { staticClass: "flex flex-col flex-grow ml-4" }, [

@@ -1,11 +1,11 @@
 <h2> all the admin stuff </h2>
 - [x] make admin dashboard
 - [x] Middleware for admin
-- [] add admin component
+- [x] add admin component
 
 <h2> Assignment stuff </h2>
-- [] get Assignments with pagination
-- [] add assignment component
+- [x] get Assignments with pagination
+- [x] add assignment component
 - [] delete / edit assignment
 
 <h2> Extra stuff</h2>

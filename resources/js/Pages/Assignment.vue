@@ -31,7 +31,12 @@
                             </div>
                             <div class="flex flex-row pt-4">
                                 <p class="text-lg font-bold">Status:</p>
-                                <p class="ml-1 text-lg">{{ stateToText }}</p>
+                                <p
+                                    @click="changeState"
+                                    class="ml-1 text-lg hover:text-blue-600"
+                                >
+                                    {{ stateToText }}
+                                </p>
                             </div>
                         </div>
                     </article>
@@ -51,14 +56,45 @@ export default {
     },
     data: function() {
         return {
-            // kind: "due"
+            mutatedState: this.state.state,
+            submit: false,
+            countdown: null
         };
     },
     props: {
         assignment: Object,
         state: Object
     },
-    methods: {},
+    methods: {
+        changeState() {
+            // set the state
+            this.mutatedState < 3
+                ? this.mutatedState++
+                : (this.mutatedState = 0);
+
+            // cancel the submit if there is one
+            if (this.submit) {
+                clearTimeout(this.countdown);
+                this.submit = !this.submit;
+            }
+            //start a new submit
+            this.startCountDown();
+        },
+        submitState() {
+            this.$inertia
+                .post(
+                    `/assignment/${this.assignment.id}/status/${this.mutatedState}`
+                )
+                .then(res => console.log("zuccc"))
+                .catch(e => console.error(e));
+        },
+        startCountDown() {
+            this.countdown = setTimeout(() => {
+                this.submitState();
+                this.submit = !this.submit;
+            }, 750);
+        }
+    },
     computed: {
         dueDate: function() {
             const date = new Date(this.assignment["due_date"]);
@@ -66,16 +102,16 @@ export default {
                 1}-${date.getFullYear()}`;
         },
         stateToText: function() {
-            const state = this.state;
+            const state = this.mutatedState;
             switch (state) {
                 case 1:
-                    return "pain";
+                    return "waiting";
                 case 2:
-                    return "less pain";
+                    return "working on it";
                 case 3:
-                    return "no pain just sad";
+                    return "done POGGERS";
                 default:
-                    return "not even started with the pain";
+                    return "nothing yet";
             }
         }
     }
