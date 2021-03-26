@@ -1,58 +1,6 @@
 <template>
     <div class="flex">
-        <table class="table-auto mx-auto w-3/4">
-            <thead class="">
-                <tr class="">
-                    <th class="border-2 border-purple-400">
-                        ID
-                    </th>
-                    <th class="border-2 border-purple-400">
-                        Name
-                    </th>
-                    <th class="border-2 border-purple-400">
-                        Email
-                    </th>
-                    <th class="border-2 border-purple-400">
-                        admin
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="">
-                <tr v-for="(user, index) in users" :key="user.id" class="">
-                    <th class="border-2 border-purple-400">
-                        <p @click="showConfirmForm(user)">{{ user.id }}</p>
-                    </th>
-                    <th class="border-2 border-purple-400">
-                        {{ user.name }}
-                    </th>
-                    <th class="border-2 border-purple-400">
-                        {{ user.email }}
-                    </th>
-                    <th class="border-2 border-purple-400">
-                        {{ adminBool[index] }}
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-        <confirmation-modal :show="confirmingUserDeletion">
-            <template #title> Change {{ user.name }} rights ? </template>
-            <template #content>
-                Are you sure you want to change this users right? this can have
-                massive impact on the website !
-            </template>
-            <template #footer>
-                <secondary-button @click.native="cancelChangeAdmin">
-                    Nevermind
-                </secondary-button>
-
-                <danger-button
-                    @click.native="changeAdminRights(user)"
-                    class="ml-2"
-                >
-                    Make {{ userRightNameReversed }}
-                </danger-button>
-            </template>
-        </confirmation-modal>
+       hoi
     </div>
 </template>
 
@@ -60,6 +8,7 @@
 import ConfirmationModal from "../Jetstream/ConfirmationModal.vue";
 import DangerButton from "../Jetstream/DangerButton.vue";
 import SecondaryButton from "../Jetstream/SecondaryButton.vue";
+
 export default {
     props: {
         users: Array

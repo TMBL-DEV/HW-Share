@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DashboardResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Throwable;
 
 class Dashboard extends Controller
 {
     public function index()
     {
         $users = User::all();
+        $dashboard = new \App\Models\Dashboard();
+        $dashboardResource = new DashboardResource($dashboard);
         return Inertia::render('Dashboard', [
-            "users" => $users
+            "DashboardData" => $dashboardResource,
         ]);
     }
 
@@ -37,9 +41,9 @@ class Dashboard extends Controller
             } else {
                 $user->admin = 0;
             }
-            // save the changes 
+            // save the changes
             $user->save();
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
         }
         // en render the result

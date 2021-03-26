@@ -12,12 +12,12 @@
                 >
                     <div class="flex flex-col">
                         <h1
-                            :class="'mx-auto text-2xl my-4 ' + kindStyling"
+                            :class="'mx-auto text-3xl my-4 ' + kindStyling"
                             @click="changeKind"
                         >
                             Homework {{ kind }}
                         </h1>
-                        <div class="flex flex-row w-full justify-center">
+                        <div class="flex flex-wrap w-full justify-center">
                             <assignment-card
                                 class="m-2"
                                 :assignment="ass"
