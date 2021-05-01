@@ -4,11 +4,7 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AssignmentStateController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\HomeController;
-use App\Models\Assignment;
-use App\Models\AssignmentState;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +18,20 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/assignment/{id}', [AssignmentController::class, 'show'])->middleware(['auth:sanctum', 'verified'])->name('assignment');
+//Route::get('/assignment/{id}', [AssignmentController::class, 'show'])->middleware(['auth:sanctum', 'verified'])->name('assignment');
+
 Route::post('/assignment/{id}/status/{state}', [AssignmentStateController::class, 'store'])->middleware(['auth:sanctum', 'verified'])->name('assignmentState.store');
 
-Route::prefix('/dashboard')->middleware(['auth:sanctum', 'verified', 'admin'])->group(function () {
-    Route::get('/', [Dashboard::class, 'index'])->name('dashboard');
-    Route::get('/create-assignment', [AssignmentController::class, 'create'])->name('assignment.create');
-    Route::post('/store-assignment', [AssignmentController::class, 'store'])->name("assignment.store");
+Route::resource('assignment', AssignmentController::class)->except([
+    'destroy', 'index'
+]);
+
+Route::name('dashboard')->prefix('/dashboard')->middleware(['auth:sanctum', 'verified', 'admin'])->group(function () {
+    Route::get('/', [Dashboard::class, 'index']);
     Route::post('admin/user/{id}', [Dashboard::class, 'rights'])->name("admin.rights");
+});
+
+Route::prefix('/manage')->middleware(['auth:sanctum', 'verified', 'admin'])->group(function () {
+    Route::get('/assignments', [Dashboard::class, 'assignments'])->name('manage.assignments');
+    Route::get('/users')->name('manage.users');
 });

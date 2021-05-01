@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\AssignmentState;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 
 class AssignmentStateController extends Controller
 {
@@ -19,7 +18,7 @@ class AssignmentStateController extends Controller
             ['assignment_id', '=', $id]
         ])->first();
         // check if the user already has a state on the assignment
-        // if not create a new assignment state 
+        // if not create a new assignment state
         if (!$assState) {
             // create new assignment state
             $assState = new AssignmentState();
@@ -35,6 +34,6 @@ class AssignmentStateController extends Controller
             $assState->state = $state;
         }
         $assState->save();
-        return redirect(route('assignment', $id));
+        return Redirect::route('assignment.show', $id);
     }
 }

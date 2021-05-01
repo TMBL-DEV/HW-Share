@@ -35,9 +35,11 @@
                                 </div>
                                 <div
                                     class="flex cursor-pointer py-2 mt-2 border-t-2 border-purple-700  w-full justify-center hover:bg-purple-700 bg-purple-500"
-                                    @click="redirectTo('/')"
+                                    @click="redirectTo(route('manage.assignments'))"
                                 >
-                                    <inertia-link class="text-lg" href="/">Manage assignments</inertia-link>
+                                    <inertia-link class="text-lg" :href="route('manage.assignments')">Manage
+                                        assignments
+                                    </inertia-link>
                                 </div>
                             </section>
                             <section
@@ -56,9 +58,10 @@
                                 </div>
                                 <div
                                     class="flex cursor-pointer py-2 mt-2 border-t-2 border-purple-700  w-full justify-center hover:bg-purple-700 bg-purple-500"
-                                    @click="redirectTo('/')"
+                                    @click="redirectTo(route('manage.users'))"
                                 >
-                                    <inertia-link class="text-lg" href="/">Manage users</inertia-link>
+                                    <inertia-link class="text-lg" :href="this.$route('manage.users')">Manage users
+                                    </inertia-link>
                                 </div>
                             </section>
                         </div>
@@ -110,5 +113,10 @@ export default {
             return this.DashboardData.data.users.filter(user => !Boolean(user.admin)).length;
         }
     },
+    data: function () {
+        return {
+            pain: this.route('manage.assignments')
+        }
+    }
 };
 </script>

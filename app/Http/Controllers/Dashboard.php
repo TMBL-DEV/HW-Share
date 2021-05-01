@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\DashboardResource;
+use App\Models\Assignment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,5 +49,12 @@ class Dashboard extends Controller
         }
         // en render the result
         return redirect(route('dashboard'));
+    }
+
+    public function assignments()
+    {
+        return Inertia::render('ManageAssignments', [
+            'assignments' => Assignment::all(),
+        ]);
     }
 }

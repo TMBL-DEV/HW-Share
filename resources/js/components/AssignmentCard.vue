@@ -1,10 +1,10 @@
 <template>
-    <inertia-link :href="route('assignment', assignment.id)">
+    <inertia-link :href="route('assignment.show', assignment.id)">
         <div class="w-80 shadow-lg">
             <div
                 :class="
                     StateStyling +
-                        '  flex flex-row bg-white shadow-sm hover:border-gray-500  border-4 rounded p-4'
+                        '  flex flex-row bg-white shadow-sm hover:border-gray-500  border-4 rounded p-4 h-36'
                 "
             >
                 <div class="flex flex-col flex-grow ml-4">

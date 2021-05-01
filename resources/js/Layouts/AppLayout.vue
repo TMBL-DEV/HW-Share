@@ -26,8 +26,8 @@
                                         $page.props.user &&
                                             $page.props.user.admin
                                     "
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="this.route('dashboard')"
+                                    :active="this.route().current('dashboard')"
                                 >
                                     Dashboard
                                 </jet-nav-link>
@@ -308,7 +308,7 @@
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link
                             v-if="$page.props.user && $page.props.user.admin"
-                            :href="route('dashboard')"
+                            :href="this.route('dashboard')"
                             :active="route().current('dashboard')"
                         >
                             Dashboard
